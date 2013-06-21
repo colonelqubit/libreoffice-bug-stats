@@ -104,8 +104,10 @@ PartyHat ()
 
     if ls $files &> /dev/null
     then
-	cat $files > $PerDay/$now.csv
-
+        # Make sure that there's a newline at the end of each file
+        # when we concatenate them.
+	for f in $files; do sed -e '$a\' "$f"; done > $PerDay/$now.csv
+	
 	echo "Files matching '$now' shoved into PerDay directory '$PerDay'"
     else
 	echo "The 'now' files are missing..."
